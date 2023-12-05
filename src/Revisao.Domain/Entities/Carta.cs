@@ -33,7 +33,6 @@ namespace Revisao.Domain.Entities
         public string Bairro { get; private set; }
         public string Estado { get; private set; }
         public int Numero { get; private set; }
-        //[CartasValidationAttribute]
         public int Idade { get; private set; }
         public string Descricao { get; private set; }
         #endregion
