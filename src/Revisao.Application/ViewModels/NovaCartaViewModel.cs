@@ -9,7 +9,6 @@ namespace Revisao.Application.ViewModels
 {
     public class NovaCartaViewModel
     {
-        public int idCarta { get; set; }
 
         [Required(ErrorMessage = "O nome e obrigatório.")]
         [MinLength(3, ErrorMessage = "O nome deve ter no mínimo 3 caracteres.")]

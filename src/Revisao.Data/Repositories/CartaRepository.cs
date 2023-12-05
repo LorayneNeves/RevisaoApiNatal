@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
+using Revisao.Data.Providers.MongoDb.Colletions;
+using Revisao.Data.Providers.MongoDb.Interfaces;
 using Revisao.Domain.Entities;
 using Revisao.Domain.Interfaces;
 using System;
@@ -11,69 +14,63 @@ namespace Revisao.Data.Repositories
 {
     public class CartaRepository : ICartaRepository
     {
-        private readonly string _cartaCaminhoArquivo;
-
+        private readonly IMongoRepository<CartaCollection> _cartaRepository;
+        private readonly IMapper _mapper;
         #region - Construtores
-        public CartaRepository()
+        public CartaRepository(IMongoRepository<CartaCollection> cartaRepository, IMapper mapper)
         {
-            _cartaCaminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "FileJsonData", "produto.json");
+            _cartaRepository = cartaRepository;
+            _mapper = mapper;
         }
 
         #endregion
 
         #region - Funções
-        public void Adicionar(Carta carta)
+        public async Task Adicionar(Carta carta)
         {
-            var cartas = LerCartasDoArquivo();
-            int proximoCodigo = ObterProximoCodigoDisponivel();
-            carta.SetaCodigoCarta(proximoCodigo);
-            cartas.Add(carta);
-            EscreverCartasNoArquivo(cartas);
+            await _cartaRepository.InsertOneAsync(_mapper.Map<CartaCollection>(carta));
         }
 
-        public void Atualizar(Carta produto)
+        public async Task Atualizar(Carta carta)
         {
-            throw new NotImplementedException();
-        }
-        Task<IEnumerable<Carta>> ICartaRepository.ObterPorCategoria(int codigo)
-        {
-            throw new NotImplementedException();
+            var buscaCarta = _cartaRepository.FilterBy(filter => filter.idCarta == carta.idCarta);
+
+
+            if (buscaCarta == null) { throw new ApplicationException("Carta não encontrada"); }
+
+            var cartaCollection = _mapper.Map<CartaCollection>(carta);
+            cartaCollection.Id = buscaCarta.FirstOrDefault().Id;
+
+            cartaCollection.Nome = carta.Nome;
+            cartaCollection.Descricao = carta.Descricao;
+            cartaCollection.Rua = carta.Rua;
+            cartaCollection.Cidade = carta.Cidade;
+            cartaCollection.Bairro = carta.Bairro;
+            cartaCollection.Numero = carta.Numero;
+            cartaCollection.Idade = cartaCollection.Idade;
+
+
+
+             await _cartaRepository.ReplaceOneAsync(cartaCollection);
         }
 
-        Task<Carta> ICartaRepository.ObterPorId(Guid id)
+        public async Task<Carta> ObterPorId(Guid id)
         {
-            throw new NotImplementedException();
+            var buscaCarta = _cartaRepository.FilterBy(filter => filter.idCarta == id);
+
+            var carta = _mapper.Map<Carta>(buscaCarta.FirstOrDefault());
+
+            return carta;
         }
 
-        IEnumerable<Carta> ICartaRepository.ObterTodos()
+        public IEnumerable<Carta> ObterTodos()
         {
-            return LerCartasDoArquivo();
+            var cartaList = _cartaRepository.FilterBy(filter => true);
+
+            return _mapper.Map<IEnumerable<Carta>>(cartaList);
         }
         #endregion
-        #region - Métodos arquivo
-        private List<Carta> LerCartasDoArquivo()
-        {
-            if (!System.IO.File.Exists(_cartaCaminhoArquivo))
-                return new List<Carta>();
-            string json = System.IO.File.ReadAllText(_cartaCaminhoArquivo);
-            return JsonConvert.DeserializeObject<List<Carta>>(json);
-        }
 
-        private int ObterProximoCodigoDisponivel()
-        {
-            List<Carta> produtos = LerCartasDoArquivo();
-            if (produtos.Any())
-                return produtos.Max(p => p.idCarta) + 1;
-            else
-                return 1;
-        }
-
-        private void EscreverCartasNoArquivo(List<Carta> produtos)
-        {
-            string json = JsonConvert.SerializeObject(produtos);
-            System.IO.File.WriteAllText(_cartaCaminhoArquivo, json);
-        }
-        #endregion
 
     }
 }

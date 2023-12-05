@@ -13,7 +13,6 @@ namespace Revisao.Application.AutoMapper
 	{
 		public DomainToApplication()
 		{
-			//exemplo visto em sala
 			CreateMap<Carta, CartaViewModel>();
 		}
 	}

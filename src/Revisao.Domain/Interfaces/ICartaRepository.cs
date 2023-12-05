@@ -11,9 +11,7 @@ namespace Revisao.Domain.Interfaces
     {
         IEnumerable<Carta> ObterTodos();
         Task<Carta> ObterPorId(Guid id);
-        Task<IEnumerable<Carta>> ObterPorCategoria(int codigo);
-
-        void Adicionar(Carta carta);
-        void Atualizar(Carta carta);
+        Task Adicionar(Carta carta);
+        Task Atualizar(Carta carta);
     }
 }

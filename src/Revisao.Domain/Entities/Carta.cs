@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,8 @@ namespace Revisao.Domain.Entities
     public class Carta
     {
         #region 1 - Contrutores
-        public Carta(int codigo, string nome, string descricao, int idade, string rua, string bairro, int numero, string cidade, string estado)
+        public Carta(string nome, string descricao, int idade, string rua, string bairro, int numero, string cidade, string estado)
         {
-            idCarta = codigo;
             Nome = nome;
             Descricao = descricao;
             Idade = idade;
@@ -22,11 +22,24 @@ namespace Revisao.Domain.Entities
             Estado = estado;
         }
 
+        public Carta(Guid idCarta, string nome, string rua, string cidade, string bairro, string estado, int numero, int idade, string descricao)
+        {
+            this.idCarta = idCarta;
+            Nome = nome;
+            Rua = rua;
+            Cidade = cidade;
+            Bairro = bairro;
+            Estado = estado;
+            Numero = numero;
+            Idade = idade;
+            Descricao = descricao;
+        }
+
 
         #endregion
 
         #region 2 - Propriedades
-        public int idCarta { get; private set; }
+        public Guid idCarta { get; private set; }
         public string Nome { get; private set; }
         public string Rua { get; private set; }
         public string Cidade { get; private set; }
@@ -40,7 +53,16 @@ namespace Revisao.Domain.Entities
         #region 3 - Comportamentos
         public void AlterarDescricao(string descricao) => Descricao = descricao;
 
-        public void SetaCodigoCarta(int novocodigo) => idCarta = novocodigo;
+        public void Atualizar(string nome, string descricao, string rua, string cidade, string estado, int numero, int idade)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Rua = rua;
+            Cidade = cidade;
+            Estado = estado;
+            Numero = numero;
+            Idade = idade;
+        }
 
         #endregion
     }

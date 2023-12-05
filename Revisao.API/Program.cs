@@ -1,6 +1,11 @@
+using Microsoft.Extensions.Options;
 using Revisao.Application.AutoMapper;
 using Revisao.Application.Interfaces;
 using Revisao.Application.Services;
+using Revisao.Data.AutoMapper;
+using Revisao.Data.Providers.MongoDb.Configuration;
+using Revisao.Data.Providers.MongoDb.Interfaces;
+using Revisao.Data.Providers.MongoDb;
 using Revisao.Data.Repositories;
 using Revisao.Domain.Interfaces;
 
@@ -13,7 +18,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection("MongoDbSettings"));
+
+builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+       serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
 builder.Services.AddAutoMapper(typeof(DomainToApplication), typeof(ApplicationToDomain));
+builder.Services.AddAutoMapper(typeof(DomainToCollection), typeof(CollectionToDomain));
+
+builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 builder.Services.AddScoped<ICartaRepository, CartaRepository>();
 builder.Services.AddScoped<ICartaService, CartaService>();

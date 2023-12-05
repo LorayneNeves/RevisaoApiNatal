@@ -6,6 +6,7 @@ using Revisao.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,26 +26,51 @@ namespace Revisao.Application.Services
         #endregion
 
         #region - Funções
-        public void Adicionar(NovaCartaViewModel novaCarta)
+        public async Task Adicionar(NovaCartaViewModel novaCartaViewModel)
         {
-            var carta = _mapper.Map<Carta>(novaCarta);
-            _cartaRepository.Adicionar(carta);
+            var novaCarta = _mapper.Map<Carta>(novaCartaViewModel);
+            Carta c = new Carta
+            (
+               novaCartaViewModel.Nome, novaCartaViewModel.Descricao, novaCartaViewModel.Idade, novaCartaViewModel.Rua,
+               novaCartaViewModel.Bairro, novaCartaViewModel.Numero, novaCartaViewModel.Cidade, novaCartaViewModel.Estado
+            );
+            await _cartaRepository.Adicionar(novaCarta);
 
         }
-        public void Atualizar(CartaViewModel carta)
+        public async Task Atualizar(Guid id, CartaViewModel cartaViewModel)
         {
-            throw new NotImplementedException();
+            var buscaCarta = await _cartaRepository.ObterPorId(id);
+
+            if (buscaCarta == null) throw new ApplicationException("Não é possível atualizar um produto que não existe!");
+
+            buscaCarta.AlterarDescricao(cartaViewModel.Descricao);            
+
+            await _cartaRepository.Atualizar(buscaCarta);
         }
 
 
-        public Task<IEnumerable<CartaViewModel>> ObterPorCategoria(int codigo)
+        public async Task<CartaViewModel> ObterPorId(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            var buscaCarta = await _cartaRepository.ObterPorId(id);
 
-        public Task<CartaViewModel> ObterPorId(Guid id)
-        {
-            throw new NotImplementedException();
+            if (buscaCarta == null)
+            {
+                throw new ApplicationException("Produto não encontrado");
+            }
+
+            var cartaViewModel = new CartaViewModel
+            {
+                idCarta = buscaCarta.idCarta,
+                Nome = buscaCarta.Nome,
+                Descricao = buscaCarta.Descricao,
+                Rua = buscaCarta.Rua,
+                Cidade = buscaCarta.Cidade,
+                Bairro = buscaCarta.Bairro,
+                Estado = buscaCarta.Estado,
+                Numero = buscaCarta.Numero,
+                Idade = buscaCarta.Idade,
+            };
+            return cartaViewModel;
         }
 
         public IEnumerable<CartaViewModel> ObterTodos()

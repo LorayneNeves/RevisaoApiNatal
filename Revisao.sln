@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Application", "03 - Ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 - Api", "04 - Api", "{078B094E-9E1C-4761-9F05-73C7C15A5FE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revisao.Domain", "src\Revisao.Domain\Revisao.Domain.csproj", "{4B7D0082-C4A6-4AD9-8369-5B4BF2472302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revisao.Domain", "src\Revisao.Domain\Revisao.Domain.csproj", "{4B7D0082-C4A6-4AD9-8369-5B4BF2472302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revisao.Data", "src\Revisao.Data\Revisao.Data.csproj", "{8376E5ED-E401-4BDE-ACCC-95386E8CD3E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revisao.Data", "src\Revisao.Data\Revisao.Data.csproj", "{8376E5ED-E401-4BDE-ACCC-95386E8CD3E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revisao.Application", "src\Revisao.Application\Revisao.Application.csproj", "{4A6E0FAF-717A-40FF-97C1-470C9C288CD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revisao.Application", "src\Revisao.Application\Revisao.Application.csproj", "{4A6E0FAF-717A-40FF-97C1-470C9C288CD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revisao.API", "Revisao.API\Revisao.API.csproj", "{D46CA1A0-E1AF-43A1-91BE-CFC93A36ADD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revisao.API", "Revisao.API\Revisao.API.csproj", "{D46CA1A0-E1AF-43A1-91BE-CFC93A36ADD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

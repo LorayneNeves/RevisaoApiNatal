@@ -11,9 +11,7 @@ namespace Revisao.Application.Interfaces
     {
         IEnumerable<CartaViewModel> ObterTodos();
         Task<CartaViewModel> ObterPorId(Guid id);
-        Task<IEnumerable<CartaViewModel>> ObterPorCategoria(int codigo);
-
-        void Adicionar(NovaCartaViewModel carta);
-        void Atualizar(CartaViewModel carta);
+        Task Adicionar(NovaCartaViewModel carta);
+        Task Atualizar(Guid id, CartaViewModel carta);
     }
 }

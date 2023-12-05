@@ -13,13 +13,12 @@ namespace Revisao.Application.AutoMapper
 	{
 		public ApplicationToDomain()
 		{
-			//Exemplo visto em sala de aula
 
 			CreateMap<CartaViewModel, Carta>()
-			.ConstructUsing(q => new Carta(q.idCarta, q.Nome, q.Descricao, q.Idade, q.Rua, q.Bairro, q.Numero, q.Cidade , q.Estado));
+			.ConstructUsing(q => new Carta(q.Nome, q.Descricao, q.Idade, q.Rua, q.Bairro, q.Numero, q.Cidade , q.Estado));
 
 			CreateMap<NovaCartaViewModel, Carta>()
-			.ConstructUsing(q => new Carta(q.idCarta, q.Nome, q.Descricao, q.Idade, q.Rua, q.Bairro, q.Numero, q.Cidade, q.Estado));
+			.ConstructUsing(q => new Carta( q.Nome, q.Descricao, q.Idade, q.Rua, q.Bairro, q.Numero, q.Cidade, q.Estado));
 
 		}
 	}
